@@ -1,0 +1,168 @@
+{
+  "name": "GMAIL_TO SHHETS",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getAll",
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        16
+      ],
+      "id": "c9531d87-c714-4e92-a0cd-890eeb24cbc9",
+      "name": "Get many messages",
+      "webhookId": "29e03eb2-1009-4d7d-8871-4da525cae246",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "P1S1KlPqTcTR2TOf",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ZvJ635ZRrBw6po4-ObICPBs4IXo82JfSdaRnosASiZc",
+          "mode": "list",
+          "cachedResultName": "Email logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZvJ635ZRrBw6po4-ObICPBs4IXo82JfSdaRnosASiZc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ZvJ635ZRrBw6po4-ObICPBs4IXo82JfSdaRnosASiZc/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "FROM": "={{ $json.From }}",
+            "SUBJECT": "={{ $json.Subject }}",
+            "MESSAGE": "={{ $json.snippet }}",
+            "DATE": "={{ $json.internalDate ? DateTime.fromMillis(Number($json.internalDate)).toFormat('yyyy-MM-dd HH:mm:ss') : $json.headers.date}}  }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "DATE",
+              "displayName": "DATE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "FROM",
+              "displayName": "FROM",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "SUBJECT",
+              "displayName": "SUBJECT",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "MESSAGE",
+              "displayName": "MESSAGE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        -32
+      ],
+      "id": "2b306981-d126-4212-bd89-f7a50b498278",
+      "name": "Append row in sheet",
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "eyUrlWtkJaXYGuO2",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -16
+      ],
+      "id": "854d8341-ffa1-4794-94d1-206288b9de06",
+      "name": "When clicking ‘Execute workflow’"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "44223c7b-3296-4dce-8f40-8dfc040a362c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a2f5638bad141a2b3032ff4af83340fd3785b784e6cddad47a6d7693c5e56e94"
+  },
+  "nodeGroups": [],
+  "id": "sd6fz9HXKT9XqHTe",
+  "tags": []
+}
